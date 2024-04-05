@@ -19,6 +19,8 @@ func main() {
 			items.GET("", api.TaskHandler)
 			items.POST("", api.CreateTaskHandler)
 			items.GET("/:id", api.GetTaskHandler)
+			items.PATCH("/:id", api.UpdateTaskHandler)
+			items.DELETE("/:id", api.DeleteTaskHandler)
 		}
 	}
 	e.Start(":8080")

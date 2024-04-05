@@ -39,3 +39,30 @@ func GetTaskHandler(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, task)
 }
+
+func UpdateTaskHandler(c echo.Context) error {
+	task := new(model.TaskUpdate)
+	if err := c.Bind(task); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	if err := model.UpdateTask(id, task); err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, task)
+}
+
+func DeleteTaskHandler(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	task, err := model.DeleteTask(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, task)
+}
