@@ -8,8 +8,23 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func TaskHandler(c echo.Context) error {
-	tasks, err := model.GetAllTasks()
+func TasksHandler(c echo.Context) error {
+	pageParam := c.QueryParam("page")
+	limitParam := c.QueryParam("limit")
+
+	page, err := strconv.Atoi(pageParam)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	limit, err := strconv.Atoi(limitParam)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	paging := model.Paging{
+		Page:  page,
+		Limit: limit,
+	}
+	tasks, err := model.GetAllTasks(&paging)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

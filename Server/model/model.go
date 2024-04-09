@@ -31,6 +31,24 @@ func (TaskCreation) TableName() string {
 	return Task{}.TableName()
 }
 
+type Paging struct {
+	Page  int   `json:"page" form:"page"`
+	Limit int   `json:"limit" form:"limit"`
+	Total int64 `json:"total" form:"-"`
+}
+
+func (p *Paging) Process() {
+	if p.Page < 1 {
+		p.Page = 1
+	}
+	if p.Limit <= 1 {
+		p.Limit = 1
+	}
+	if p.Limit >= 100 {
+		p.Limit = 100
+	}
+}
+
 type TaskUpdate struct {
 	Title       *string `json:"title" gorm:"column:title"`
 	Description *string `json:"description" gorm:"column:description"`
@@ -42,7 +60,7 @@ func (TaskUpdate) TableName() string {
 	return Task{}.TableName()
 }
 
-func GetAllTasks() ([]Task, error) {
+func GetAllTasks(paging *Paging) ([]Task, error) {
 	db, err := db.NewDB()
 	if err != nil {
 		return nil, err
@@ -53,8 +71,12 @@ func GetAllTasks() ([]Task, error) {
 	}
 	defer sqlDB.Close()
 
+	paging.Process()
 	var tasks []Task
-	result := db.Order("id DESC").Find(&tasks)
+	result := db.Order("id DESC").
+		Offset((paging.Page - 1) * paging.Limit).
+		Limit(paging.Limit).
+		Find(&tasks)
 	if result.Error != nil {
 		return nil, result.Error
 	}

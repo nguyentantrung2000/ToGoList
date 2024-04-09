@@ -16,7 +16,7 @@ func main() {
 	{
 		items := v1.Group("/items")
 		{
-			items.GET("", api.TaskHandler)
+			items.GET("", api.TasksHandler)
 			items.POST("", api.CreateTaskHandler)
 			items.GET("/:id", api.GetTaskHandler)
 			items.PATCH("/:id", api.UpdateTaskHandler)
