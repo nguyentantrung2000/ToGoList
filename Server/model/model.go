@@ -54,7 +54,7 @@ func GetAllTasks() ([]Task, error) {
 	defer sqlDB.Close()
 
 	var tasks []Task
-	result := db.Find(&tasks)
+	result := db.Order("id DESC").Find(&tasks)
 	if result.Error != nil {
 		return nil, result.Error
 	}
