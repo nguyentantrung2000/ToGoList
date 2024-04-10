@@ -1,0 +1,13 @@
+.menu .ant-menu-title-content {
+    color: #fff;
+    opacity: 0.65;
+}
+.menu .ant-menu-item-selected {
+    background-color: red;
+}
+
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+}

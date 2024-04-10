@@ -1,10 +1,10 @@
 import React from 'react';
+import { Layout, Flex } from 'antd';
+import SideBar from '../../components/SideBar';
 
-export default function HomePage() {
-    return (
-        <div>
-        <h1>Home Page</h1>
-        <p>This is the Home Page</p>
-        </div>
-    );
-}
+
+const HomePage = () => {
+    return <div>this is home page</div>;
+};
+
+export default HomePage;
